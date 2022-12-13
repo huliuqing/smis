@@ -13,17 +13,28 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
-Route::prefix('v1')->group(function (){
-    Route::post("/register", 'Api\\UserController@register');
-    Route::post("/login", 'Api\\UserController@login');
+Route::prefix('v1')->group(function () {
+    Route::prefix("/auth")->group(function () {
+        Route::post('/student/login', 'Api\\Student\\AuthController@login');
+        Route::post('/login', 'Api\\Teacher\\AuthController@login');
 
-    //这里使用passport中间件验证token
-    Route::middleware('auth:api')->group(function (){
-        Route::post("/user", 'Api\\UserController@info');
-        Route::post("/logout", 'Api\\UserController@logout');
+        Route::middleware('auth:api')->group(function (){
+            Route::post('/logout', 'Api\\Teacher\\AuthController@logout');
+            Route::get('/profile', 'Api\\Teacher\\AuthController@profile');
+        });
     });
+
+    Route::prefix("user")->group(function () {
+        Route::post("/register", 'Api\\UserController@register');
+        Route::post('/create', 'Api\\UserController@create');
+    });
+
+    Route::prefix('/school')->middleware('auth:api')->group(function (){
+        Route::post('/store', 'Api\\SchoolController@store');
+    });
+
 });

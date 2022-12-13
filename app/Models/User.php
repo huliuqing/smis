@@ -1,14 +1,23 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Laravel\Passport\HasApiTokens;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laratrust\Traits\LaratrustUserTrait;
 
 class User extends Authenticatable
 {
+    const STATUS_CLOSE = 0;
+    const STATUS_NORMAL = 1;
+
+    const TYPE_UNKNOWN = 0;
+    const TYPE_TEACHER = 1;
+    const TYPE_STUDENT = 2;
+
+    use LaratrustUserTrait;
     use HasApiTokens, Notifiable;
 
     /**
@@ -17,7 +26,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'type', 'status', 'sns_line_id',
     ];
 
     /**
@@ -28,4 +37,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * @TODO 教师注册审核
+     * @return void
+     */
+    public function audit()
+    {
+
+    }
 }
