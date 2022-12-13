@@ -16,3 +16,14 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::prefix('v1')->group(function (){
+    Route::post("/register", 'Api\\UserController@register');
+    Route::post("/login", 'Api\\UserController@login');
+
+    //这里使用passport中间件验证token
+    Route::middleware('auth:api')->group(function (){
+        Route::post("/user", 'Api\\UserController@info');
+        Route::post("/logout", 'Api\\UserController@logout');
+    });
+});
