@@ -35,6 +35,10 @@ Route::prefix('v1')->group(function () {
 
         Route::middleware('auth:api')->group(function (){
             Route::post("/invite", 'Api\\UserController@invite');
+            Route::post('/follow/{id}', 'Api\\FollowerController@store');
+            Route::delete('/follow/{id}', 'Api\\FollowerController@destory');
+            Route::get('/follower', 'Api\\UserController@followers');
+            Route::get('/following', 'Api\\UserController@followings');
         });
     });
 

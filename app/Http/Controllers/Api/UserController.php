@@ -6,6 +6,7 @@ use App\Mail\UserInvite;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 use App\Http\Controllers\Controller;
@@ -152,4 +153,31 @@ class UserController extends Controller
 
         return $this->success(['message' => 'invite email send.']);
     }
+
+    /**
+     * followers 粉丝
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
+     */
+    public function followers()
+    {
+        DB::enableQueryLog();
+        $user = Auth::user();
+        $users = $user->followers()->paginate(30);
+        dd(DB::getQueryLog());
+        return $this->success($users);
+    }
+
+    /**
+     * followings 关注
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
+     */
+    public function followings()
+    {
+        $user = Auth::user();
+        $users = $user->followings()->paginate(30);
+        return $this->success($users);
+    }
+
 }
