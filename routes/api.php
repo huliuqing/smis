@@ -31,6 +31,11 @@ Route::prefix('v1')->group(function () {
     Route::prefix("user")->group(function () {
         Route::post("/register", 'Api\\UserController@register');
         Route::post('/create', 'Api\\UserController@create');
+
+
+        Route::middleware('auth:api')->group(function (){
+            Route::post("/invite", 'Api\\UserController@invite');
+        });
     });
 
     Route::prefix('/school')->middleware('auth:api')->group(function (){

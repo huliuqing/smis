@@ -21,4 +21,10 @@ class UserSchool extends Model
     protected $fillable = [
         'school_id', 'user_id', 'type',
     ];
+
+    public function existsRelation($userId, $schoolId)
+    {
+        $cnt = $this->where(['user_id' => $userId, 'school_id' => $schoolId])->count();
+        return $cnt > 0;
+    }
 }

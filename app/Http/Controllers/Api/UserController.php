@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\UserSchool;
+use App\Mail\UserInvite;
 use Illuminate\Http\Request;
+
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\UserSchool;
+use App\Models\School;
+
 
 class UserController extends Controller
 {
@@ -102,5 +108,48 @@ class UserController extends Controller
         }
 
         return response()->json([], 200);
+    }
+
+    /**
+     * invite 邀请用户成为学校教师，被邀请的教师为普通教师角色
+     * @TODO 逻辑需要做验证邀请，还有邀请落地页
+     * @param Request $request
+     * @return void
+     */
+    public function invite(Request $request)
+    {
+        try {
+            $this->validate($request, [
+                'email' => 'required|email',
+                'school_id' => 'int',
+            ]);
+        } catch (\Exception $e) {
+            return $this->failure(['message' => 'parameter invalid.']);
+        }
+
+        $userModel = new User();
+        $inviteeUser = $userModel->where(['email' => $request->email])->first();
+        if (!$inviteeUser) {
+            return $this->failure(['message' => 'invite user not exists.']);
+        }
+
+        if ($userModel->isTeacher($inviteeUser->type)) {
+            return $this->failure(['message' => 'invite user already is a teacher.']);
+        }
+
+        $userSchoolModel = new UserSchool();
+        $invited = $userSchoolModel->existsRelation($inviteeUser->id, $request->school_id);
+        if ($invited) {
+            return $this->failure(['message' => 'user invited before.']);
+        }
+
+        $school = School::find($request->school_id);
+        if (!$school) {
+            return $this->failure(['message' => 'invalid invite school.']);
+        }
+
+        Mail::send(new UserInvite(Auth::user(), $inviteeUser->email, $school));
+
+        return $this->success(['message' => 'invite email send.']);
     }
 }

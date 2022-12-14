@@ -21,7 +21,7 @@ class Controller extends BaseController
         return $this->JSONResponse($data);
     }
 
-    public function failure($data, int $code)
+    public function failure($data, int $code = 400)
     {
         return $this->JSONResponse($data, $code);
     }
