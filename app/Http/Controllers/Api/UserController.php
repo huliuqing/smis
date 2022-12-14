@@ -156,20 +156,22 @@ class UserController extends Controller
 
     /**
      * followers 粉丝
+     * @TODO 权限控制
      * @param User $user
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
      */
     public function followers()
     {
-        DB::enableQueryLog();
+//        DB::enableQueryLog();
         $user = Auth::user();
         $users = $user->followers()->paginate(30);
-        dd(DB::getQueryLog());
+//        dd(DB::getQueryLog());
         return $this->success($users);
     }
 
     /**
      * followings 关注
+     * @TODO 权限控制
      * @param User $user
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
      */
