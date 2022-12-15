@@ -35,6 +35,7 @@ Route::prefix('v1')->group(function () {
 
         Route::middleware('auth:api')->group(function (){
             Route::post("/invite", 'Api\\UserController@invite');
+
             Route::post('/follow/{id}', 'Api\\FollowerController@store');
             Route::delete('/follow/{id}', 'Api\\FollowerController@destory');
             Route::get('/follower', 'Api\\UserController@followers');
@@ -42,8 +43,9 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    Route::prefix('/school')->middleware('auth:api')->group(function (){
-        Route::post('/store', 'Api\\SchoolController@store');
+    Route::middleware('auth:api')->group(function () {
+        Route::post('/school/store', 'Api\\SchoolController@store');
+        Route::post('/notification/send', 'Api\\MessageNotificationController@send');
+        Route::post('/chat/send', 'Api\\MessageChatController@send');
     });
-
 });

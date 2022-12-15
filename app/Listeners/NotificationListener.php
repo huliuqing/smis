@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\NotificationEvent;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Support\Facades\Log;
 
 class NotificationListener
 {
@@ -16,6 +17,6 @@ class NotificationListener
      */
     public function handle(NotificationEvent $event)
     {
-        // @TODO push NotificationEvent to heroku
+        Log::debug('NotificationListener: handler');
     }
 }

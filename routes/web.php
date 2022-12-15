@@ -14,3 +14,8 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+// @TODO 删除测试消息推送和聊天 index 页面
+Route::get('/notification/index', 'Api\\MessageNotificationController@index');
+Route::get('/chat/index', 'Api\\MessageChatController@index');
