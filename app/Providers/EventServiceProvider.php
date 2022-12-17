@@ -24,6 +24,10 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ChatEvent' => [
             'App\Listeners\ChatListener',
         ],
+
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            \SocialiteProviders\Line\LineExtendSocialite::class.'@handle',
+        ],
     ];
 
     /**

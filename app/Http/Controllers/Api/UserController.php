@@ -55,7 +55,7 @@ class UserController extends Controller
             return $this->failure(['message' => "bind user's school failure."], 400);
         }
 
-        $token = $user->createToken('Laravel-9-Passport-Auth')->accessToken;
+        $token = $user->createToken(env('AUTH_TOKEN_NAME_API'))->accessToken;
         return response()->json(['token' => $token], 200);
     }
 

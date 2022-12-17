@@ -15,6 +15,7 @@ class MessageChatController extends Controller
 {
     /**
      * @TODO 删除 index
+     * @link http://127.0.0.1:8000/chat/index
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
      */
     public function index()

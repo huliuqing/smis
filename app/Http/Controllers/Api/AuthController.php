@@ -46,7 +46,7 @@ class AuthController extends Controller
     private function loginAuth(array $whereStmt)
     {
         if (auth()->attempt($whereStmt)) {
-            $token = auth()->user()->createToken('Laravel-9-Passport-Auth')->accessToken;
+            $token = auth()->user()->createToken(env('AUTH_TOKEN_NAME_API'))->accessToken;
             return $this->success(['token' => $token]);
         }
 
