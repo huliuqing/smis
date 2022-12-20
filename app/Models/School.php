@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class School extends Model
 {
@@ -32,11 +33,15 @@ class School extends Model
         return $this;
     }
 
-    public function teacher(){
-        return $this->hasOne(SchoolTeacher::class,'sid');
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function users(){
+        return $this->belongsToMany(User::class, 'smis_user_schools', 'school_id', 'user_id');
     }
 
-    public function student(){
-        return $this->hasOne(User::class,'id','tid');
+    public function withLoginUsers(){
+        return $this->belongsToMany(User::class, 'smis_user_schools', 'school_id', 'user_id')
+            ->where('users.id', '=', Auth::user()->id);
     }
 }

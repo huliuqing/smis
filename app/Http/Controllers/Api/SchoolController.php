@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\School;
+use App\Models\User;
 use App\Models\UserSchool;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +21,12 @@ class SchoolController extends Controller
         //
     }
 
+    public function browser(Request $request)
+    {
+        $schools = School::with(['withLoginUsers'])->paginate(30);
+        return $this->success($schools);
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -29,16 +36,48 @@ class SchoolController extends Controller
     {
     }
 
+    public function join(Request $request)
+    {
+        $user = Auth::user();
+        // @TODO 支持绑定多学校
+        $newRef = [
+            'school_id' => $request->school_id,
+            'user_id' => $user->id,
+            'type' => UserSchool::TYPE_SCHOOL_TEACHER, // 3 for student
+        ];
+
+        // @TODO define SchoolUser
+        // 学生仅能属于一所学校
+        $refSchoolUser = UserSchool::create($newRef);
+        if (!$refSchoolUser) {
+            return $this->failure(['message' => "School join failure."], 400);
+        }
+
+        return response()->json([], 200);
+    }
+
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
+
+        try {
+            // @TODO 添加学校注册
+            $this->validate($request, [
+                'name' => 'required|min:4',
+            ]);
+        } catch (\Exception $e) {
+            return $this->failure(['message' => 'request parameter invalid'], 400);
+        }
+
         // @TODO 事务支持
         $school = $this->storeSchool($request);
+        if (false === $school) {
+            return $this->failure(['message' => 'school created fail'], 400);
+        }
+
         $refSchoolUser = $this->storeUserSchool($request, $school);
 
         return $this->success(['school' => $school]);
@@ -47,19 +86,15 @@ class SchoolController extends Controller
     /**
      * storeSchool 创建学校
      * @param Request $request
-     * @return void
+     * @return false
      */
     protected function storeSchool(Request $request)
     {
         $userId = Auth::user()->id;
 
-        try {
-            // @TODO 添加学校注册
-            $this->validate($request, [
-                'name' => 'required|min:4',
-            ]);
-        } catch (\Exception $e) {
-            return $this->failure(['message' => 'register information invalid'], 400);
+        $cnt = School::where(['name' => $request->name])->count();
+        if ($cnt > 0) {
+            return false;
         }
 
         $school = School::create([

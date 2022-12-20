@@ -182,4 +182,15 @@ class UserController extends Controller
         return $this->success($users);
     }
 
+    /**
+     * schools 获取用户已加入的学校列表
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function schools()
+    {
+        $user = Auth::user();
+        $users = $user->schools()->paginate(30);
+        return $this->success($users);
+    }
+
 }

@@ -47,6 +47,11 @@ class User extends Authenticatable
 
     }
 
+    public function schools()
+    {
+        return $this->belongsToMany(School::class, 'smis_user_schools', 'user_id', 'school_id');
+    }
+
     /**
      * followings 粉丝
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
