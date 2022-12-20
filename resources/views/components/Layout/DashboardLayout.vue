@@ -8,6 +8,11 @@
         <p>Dashboard</p>
       </sidebar-link>
 
+      <sidebar-link to="/admin/user/browser">
+        <i class="nc-icon nc-istanbul"></i>
+        <p>用户列表</p>
+      </sidebar-link>
+
       <sidebar-link to="/school/browser">
         <i class="nc-icon nc-istanbul"></i>
         <p>学校列表</p>

@@ -16,12 +16,9 @@
       <div class="row">
         <div class="col-12">
           <div class="col-12">
-            <card class="strpied-tabled-with-hover"
-                  body-classes="table-full-width table-responsive"
-            >
+            <card class="strpied-tabled-with-hover">
               <template slot="header">
                 <h4 class="card-title">学校列表</h4>
-
               </template>
 
               <school-table class="table-hover table-striped"

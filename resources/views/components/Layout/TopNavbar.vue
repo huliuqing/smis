@@ -15,23 +15,12 @@
       </button>
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="nav navbar-nav mr-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="#" data-toggle="dropdown">
-              <i class="nc-icon nc-palette"></i>
-            </a>
-          </li>
-          <base-dropdown tag="li">
-            <template slot="title">
-              <i class="nc-icon nc-planet"></i>
-              <b class="caret"></b>
-              <span class="notification">5</span>
-            </template>
-            <a class="dropdown-item" href="#">Notification 1</a>
-            <a class="dropdown-item" href="#">Notification 2</a>
-            <a class="dropdown-item" href="#">Notification 3</a>
-            <a class="dropdown-item" href="#">Notification 4</a>
-            <a class="dropdown-item" href="#">Another notification</a>
-          </base-dropdown>
+<!--          <li class="nav-item">-->
+<!--            <a class="nav-link" href="#" data-toggle="dropdown">-->
+<!--              <i class="nc-icon nc-palette"></i>-->
+<!--            </a>-->
+<!--          </li>-->
+
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nc-icon nc-zoom-split"></i>
@@ -41,8 +30,19 @@
         </ul>
 
         <ul class="navbar-nav ml-auto">
+
+          <base-dropdown tag="li" id="inbox" v-tooltip.top-center="inboxTooltip" @click="$emit('browserNotification')">
+            <template slot="title">
+              <i class="nc-icon nc-send"></i>
+              <b class="caret" v-if="notificationCnt > 0"></b>
+              <span class="notification" id="inbox-cnt" v-if="notificationCnt > 0">{{ notificationCnt }}</span>
+            </template>
+
+<!--            <a class="dropdown-item" href="#">Notification 1</a>-->
+          </base-dropdown>
+
           <li class="nav-item">
-            <router-link class="nav-link" to="/admin/user/invite"><i class="nc-icon nc-simple-add"></i> 邀请</router-link>
+            <router-link class="nav-link" to="/admin/user/invite"><i class="nc-icon nc-simple-add"></i> 邀请 </router-link>
           </li>
 
           <li class="nav-item">
@@ -51,15 +51,6 @@
             </sidebar-link>
           </li>
 
-          <base-dropdown title="Dropdown">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something</a>
-            <div class="divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </base-dropdown>
           <li class="nav-item">
             <a href="#" class="nav-link" @click="logout">
               退出
@@ -73,6 +64,7 @@
 
 <script>
 import api from "../../../assets/js/const/api";
+import config from "../../../assets/js/const/config";
 
 export default {
   computed: {
@@ -83,8 +75,13 @@ export default {
   },
   data() {
     return {
-      activeNotifications: false
+      activeNotifications: false,
+      notificationCnt: 0,
+      inboxTooltip: '站内信',
     }
+  },
+  mounted() {
+    this.watchNotification()
   },
   methods: {
     capitalizeFirstLetter(string) {
@@ -103,6 +100,28 @@ export default {
       this.$sidebar.displaySidebar(false)
     },
 
+    watchNotification() {
+      let channel = config.pusher.notification.channel
+      let le = config.pusher.notification.event
+
+      console.log(`TopNavbar[watchNotification] channel[${channel}], event[${le}]`)
+      Echo.channel(channel)
+          .listen('NotificationEvent', (e) => {
+            this.notificationCnt++
+            let dropdown = document.getElementById('inbox').querySelector('.dropdown-menu')
+            let elem = `<a class="dropdown-item" href="#">${e.message.message}</a>`
+            dropdown.innerHTML = elem + dropdown.innerHTML
+          })
+
+    },
+    resetNotificationCnt() {
+        this.notificationCnt = 0
+    },
+
+    browserNotification() {
+      this.resetNotificationCnt()
+    },
+
     logout() {
       console.log('Logout Click')
       localStorage.clear()
@@ -111,18 +130,18 @@ export default {
       let url = api.getRequestUrl('logout')
       console.log('request url', url);
       axios.post(url)
-            .then((response) => {
-              console.log(response);
-              if (response.status === 200) {
-                console.log('resp:', response)
-                this.$router.push('/')
-              } else {
-                alert('log out request err.');
-              }
-            })
-            .catch(function (error) {
-              alert('log out:' + error);
-            });
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              console.log('resp:', response)
+              this.$router.push('/')
+            } else {
+              alert('log out request err.');
+            }
+          })
+          .catch(function (error) {
+            alert('log out:' + error);
+          });
     },
   }
 }

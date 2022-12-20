@@ -38,9 +38,7 @@
 
       <div class="row">
         <div class="col-12">
-          <card class="strpied-tabled-with-hover"
-                body-classes="table-full-width table-responsive"
-          >
+          <card class="strpied-tabled-with-hover">
             <template slot="header">
               <h4 class="card-title">关注</h4>
               <p class="card-category">Nice 关注了这么多好朋友</p>
@@ -55,9 +53,7 @@
         </div>
 
         <div class="col-12">
-          <card class="strpied-tabled-with-hover"
-                body-classes="table-full-width table-responsive"
-          >
+          <card class="strpied-tabled-with-hover">
             <template slot="header">
               <h4 class="card-title">粉丝</h4>
               <p class="card-category">社交达人</p>

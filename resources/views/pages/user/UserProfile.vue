@@ -8,13 +8,11 @@
 <!--        </div>-->
 
         <div class="col-md-8">
-          <user-school>
-          </user-school>
+          <user-school></user-school>
         </div>
 
         <div class="col-md-4">
-          <user-card>
-          </user-card>
+          <user-card></user-card>
         </div>
 
       </div>
