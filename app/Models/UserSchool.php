@@ -27,5 +27,4 @@ class UserSchool extends Model
         $cnt = $this->where(['user_id' => $userId, 'school_id' => $schoolId])->count();
         return $cnt > 0;
     }
-
 }

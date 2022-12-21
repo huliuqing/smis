@@ -39,6 +39,10 @@ class MessageChatController extends Controller
         $message->setAttribute('message', $request->message);
         $message->save();
 
+        if (Auth::user()->id === $request->to) {
+            return $this->success(['message' => "Can't send message to yourself."]);
+        }
+
 //         @TODO 权限校验
 //        Log::debug('NotificationController: send');
         event(new ChatEvent($message));

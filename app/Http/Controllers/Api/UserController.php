@@ -18,6 +18,17 @@ use App\Models\School;
 class UserController extends Controller
 {
     /**
+     * 用户列表
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function browser(Request $request)
+    {
+        $users = User::where('id', '<>', Auth::user()->id)->paginate($request->per_page ?? 30);
+        return $this->success($users);
+    }
+
+    /**
      * register 注册教师，注册教师审批通过后称为学校「管理员角色」
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
@@ -160,11 +171,11 @@ class UserController extends Controller
      * @param User $user
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
      */
-    public function followers()
+    public function followers(Request $request)
     {
 //        DB::enableQueryLog();
         $user = Auth::user();
-        $users = $user->followers()->paginate(30);
+        $users = $user->followers()->paginate($request->per_page ?? 30);
 //        dd(DB::getQueryLog());
         return $this->success($users);
     }
@@ -175,10 +186,10 @@ class UserController extends Controller
      * @param User $user
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\Foundation\Application|\Illuminate\View\View
      */
-    public function followings()
+    public function followings(Request $request)
     {
         $user = Auth::user();
-        $users = $user->followings()->paginate(30);
+        $users = $user->followings()->paginate($request->per_page ?? 30);
         return $this->success($users);
     }
 
@@ -186,10 +197,10 @@ class UserController extends Controller
      * schools 获取用户已加入的学校列表
      * @return \Illuminate\Http\JsonResponse
      */
-    public function schools()
+    public function schools(Request $request)
     {
         $user = Auth::user();
-        $users = $user->schools()->paginate(30);
+        $users = $user->schools()->paginate($request->per_page ?? 30);
         return $this->success($users);
     }
 

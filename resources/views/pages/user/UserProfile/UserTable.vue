@@ -1,59 +1,61 @@
 <template>
-  <table class="table">
-    <thead>
-    <slot name="columns">
-      <tr>
-        <th v-for="column in columns" :key="column">{{ column }}</th>
-      </tr>
-    </slot>
-    </thead>
-
-    <tbody>
-    <tr v-for="(item, index) in data" :key="index">
-      <slot :row="item">
-        <td v-for="column in columns" :key="column" v-if="hasValue(item, column)">{{ itemValue(item, column) }}</td>
-
-<!--        <td>-->
-<!--          <button type="button" class="btn btn-success btn-xs btn-fill float-right" v-tooltip.top-center="followTooltip"-->
-<!--                  @click.prevent="follow(item)">-->
-<!--            关注-->
-<!--          </button>-->
-
-<!--          <button type="button" class="btn disabled btn-xs btn-fill float-right" v-tooltip.top-center="unfollowTooltip"-->
-<!--                  @click="unfollow">-->
-<!--            取关-->
-<!--          </button>-->
-<!--        </td>-->
-        <td>
-          <button type="button"
-                  class="btn-simple btn btn-xs btn-info has-tooltip"
-                  v-tooltip.top-center="followTooltip"
-                  @click.prevent="follow(item)">
-            <i class="fa fa-plus"></i>
-          </button>
-
-          <button type="button"
-                  class="btn-simple btn btn-xs btn-danger has-tooltip"
-                  v-tooltip.top-center="unfollowTooltip"
-                  @click="unfollow(item)">
-            <i class="fa fa-minus"></i>
-          </button>
-        </td>
+  <div>
+    <table class="table">
+      <thead>
+      <slot name="columns">
+        <tr>
+          <th v-for="column in columns" :key="column">{{ column }}</th>
+        </tr>
       </slot>
-    </tr>
-    </tbody>
+      </thead>
 
-  </table>
+      <tbody>
+      <tr v-for="(item, index) in data" :key="index">
+        <slot :row="item">
+          <td v-for="column in columns" :key="column" v-if="hasValue(item, column)">{{ itemValue(item, column) }}</td>
+          <td>
+            <button type="button"
+                    class="btn-simple btn btn-xs btn-info has-tooltip"
+                    v-tooltip.top-center="followTooltip"
+                    @click.prevent="follow(item)">
+              <i class="fa fa-plus"></i>
+            </button>
+
+            <button type="button"
+                    class="btn-simple btn btn-xs btn-danger has-tooltip"
+                    v-tooltip.top-center="unfollowTooltip"
+                    @click="unfollow(item)">
+              <i class="fa fa-minus"></i>
+            </button>
+
+
+            <button type="button"
+                    class="btn-simple btn btn-xs btn-light has-tooltip"
+                    v-tooltip.top-center="chatTooltip"
+                    @click="$refs.refChatBox.chatWith(item)">
+              <i class="fa fa-comment"></i>
+            </button>
+          </td>
+        </slot>
+      </tr>
+      </tbody>
+    </table>
+
+    <chat-box ref="refChatBox"></chat-box>
+  </div>
 </template>
 
 <script>
 import notify from "../../../../assets/js/utils/notify";
 import api from "../../../../assets/js/const/api";
+import ChatBox from "../../../components/Chat/ChatBox.vue";
 
 export default {
   name: 'l-table',
+  components: {
+    ChatBox
+  },
   props: {
-
     columns: Array,
     data: Array
   },
@@ -61,6 +63,7 @@ export default {
     return {
       followTooltip: '关注用户',
       unfollowTooltip: '取消关注',
+      chatTooltip: '聊天',
     }
   },
   methods: {
@@ -109,6 +112,7 @@ export default {
             notify.danger(this.$notifications, '取关用户 <b>' + item.name + '</b> 失败')
           });
     },
+
     itemValue(item, column) {
       return item[column.toLowerCase()]
     }

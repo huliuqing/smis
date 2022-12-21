@@ -9,7 +9,7 @@
       </sidebar-link>
 
       <sidebar-link to="/admin/user/browser">
-        <i class="nc-icon nc-istanbul"></i>
+        <i class="nc-icon nc-badge"></i>
         <p>用户列表</p>
       </sidebar-link>
 

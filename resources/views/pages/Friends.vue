@@ -121,14 +121,13 @@ export default {
               if (this.hasFollower()) {
                 this.followers.cnt = respData.total
                 this.followers.data = respData.data
-                console.log(this.followers)
+                notify.success(this.$notifications, '粉丝列表获取成功');
               }
             } else {
-              // alert(' user profile request err.');
             }
           })
           .catch((error) => {
-            notify.danger(this.$notifications, '用户「关注」获取失败')
+            notify.danger(this.$notifications, '粉丝列表获取失败')
           });
 
       return []
@@ -151,14 +150,14 @@ export default {
               if (this.hasFollowing()) {
                 this.followings.cnt = respData.total
                 this.followings.data = respData.data
-                console.log(this.followings)
+                notify.danger(this.$notifications, '关注列表获取成功')
               }
             } else {
               // alert(' user profile request err.');
             }
           })
           .catch((error) => {
-            notify.danger(this.$notifications, '用户「粉丝」获取失败')
+            notify.danger(this.$notifications, '关注列表获取失败')
           });
 
       return []

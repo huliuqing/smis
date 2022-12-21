@@ -102,11 +102,11 @@ export default {
 
     watchNotification() {
       let channel = config.pusher.notification.channel
-      let le = config.pusher.notification.event
+      let listenEvent = config.pusher.notification.event
 
-      console.log(`TopNavbar[watchNotification] channel[${channel}], event[${le}]`)
+      console.log(`TopNavbar[watchNotification] channel[${channel}], event[${listenEvent}]`)
       Echo.channel(channel)
-          .listen('NotificationEvent', (e) => {
+          .listen(listenEvent, (e) => {
             this.notificationCnt++
             let dropdown = document.getElementById('inbox').querySelector('.dropdown-menu')
             let elem = `<a class="dropdown-item" href="#">${e.message.message}</a>`

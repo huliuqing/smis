@@ -10,21 +10,38 @@
             </template>
 
             <user-table class="table-hover table-striped"
-                     :columns="columns"
-                     :data="users.data">
+                        :columns="columns"
+                        :data="users.data">
 
             </user-table>
 
+            <nav aria-label="Page navigation example" v-if="pagination">
+              <ul class="pagination justify-content-end">
+                <li class="page-item" v-bind:class="pagination.hasPreviousPage() ? '' : 'disabled'">
+                  <a class="page-link" href="javascript: void(0)"
+                     @click="fetchUsers(pagination.data.prev_page_url)">Previous</a>
+                </li>
+
+                <li class="page-item">
+                  <a class="page-link" href="javascript: void(0)">{{ pagination.data.current_page }}</a>
+                </li>
+
+                <li class="page-item" v-bind:class="pagination.hasNextPage() ? '' : 'disabled'">
+                  <a class="page-link" href="javascript: void(0)" @click="fetchUsers(pagination.data.next_page_url)">Next</a>
+                </li>
+              </ul>
+            </nav>
+
           </card>
+
         </div>
       </div><!--end:row-->
     </div>
   </div>
 </template>
+
 <script>
 import UserTable from "./UserProfile/UserTable.vue";
-import Card from "../../components/Cards/Card.vue";
-import StatsCard from '../../components/Cards/StatsCard.vue'
 
 import api from "../../../assets/js/const/api";
 import notify from "../../../assets/js/utils/notify";
@@ -37,6 +54,7 @@ export default {
 
   data() {
     return {
+      pagination: null,
       columns: [...tableColumns],
       users: {
         cnt: 0,
@@ -46,14 +64,22 @@ export default {
   },
 
   methods: {
-    fetchUsers: function (e) {
-      let url = api.getRequestUrl('userBrowser')
+    fetchUsers: function (url) {
+      if (url === undefined) {
+        url = api.getRequestUrl('userBrowser')
+      }
+
       axios.get(url)
           .then((response) => {
             console.log(response);
             if (response.status === 200) {
               let respData = response.data
               this.users.data = respData.data
+
+              // 分页处理
+              delete respData.data// 删除记录数，仅保留分页
+              api.pagination.data = respData
+              this.pagination = api.pagination
             } else {
               // alert(' user profile request err.');
             }

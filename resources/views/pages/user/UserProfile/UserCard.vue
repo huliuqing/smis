@@ -71,7 +71,7 @@
               console.log(response);
               if (response.status === 200) {
                 console.log('resp:', response)
-                sessionStorage.setItem('user', response.data.user)
+                sessionStorage.setItem('user', JSON.stringify(response.data.user))
                 this.user = response.data.user
               } else {
                 alert(' user profile request err.');

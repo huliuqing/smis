@@ -17,6 +17,7 @@ import Friends from "../../views/pages/Friends.vue";
 
 import AddSchool from "../../views/pages/school/AddSchool.vue";
 import BrowerSchool from "../../views/pages/school/BrowerSchool.vue";
+import UserBrowser from "../../views/pages/user/UserBrowser.vue";
 
 // import TableList from 'src/pages/TableList.vue'
 // import Typography from 'src/pages/Typography.vue'
@@ -67,16 +68,22 @@ const routes = [
         component: DashboardLayout,
         redirect: '/admin/overview',
         children: [
-
             {
                 path: 'overview',
                 name: 'Overview',
                 component: Overview
             },
+
             {
               path: 'user',
-              name: 'User',
+              name: 'UserProfile',
               component: UserProfile
+            },
+
+            {
+              path: 'user/browser',
+              name: 'UserBrowser',
+              component: UserBrowser
             },
 
             {

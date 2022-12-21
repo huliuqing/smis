@@ -17,7 +17,7 @@
 
             <!-- Password input -->
             <div class="form-outline mb-4">
-              <input type="password" id="typePassword" class="form-control form-control-lg"  v-model="password"/>
+              <input type="password" id="typePassword" class="form-control form-control-lg" v-model="password"/>
               <label class="form-label" for="typePassword">Password</label>
             </div>
 
@@ -65,12 +65,12 @@ export default {
   // props: ["email", "password"],
   props: {
     email: {
-      default:'admin@smis.com',
-      type:String
+      default: 'admin@smis.com',
+      type: String
     },
     password: {
-      default:'12345678',
-      type:String
+      default: '12345678',
+      type: String
     },
   },
   methods: {
@@ -94,6 +94,7 @@ export default {
               sessionStorage.setItem('token', oauthToken)
               window.axios.defaults.headers.common['Authorization'] = oauthToken ? 'Bearer ' + oauthToken : '';
 
+              this.loadUser()
               this.$router.push({path: '/'})
             } else {
               alert(error);
@@ -102,6 +103,26 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
+    },
+    loadUser: function () {
+      let url = api.getRequestUrl('profile')
+      console.log('request url', url);
+      axios.get(url,)
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              console.log('resp:', response)
+              sessionStorage.setItem('user', JSON.stringify(response.data.user))
+              this.user = response.data.user
+            } else {
+              alert(' user profile request err.');
+            }
+          })
+          .catch(function (error) {
+            alert('user profile:' + error);
+          });
+
+      return []
     }
   }
 }
