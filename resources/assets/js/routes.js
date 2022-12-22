@@ -6,8 +6,8 @@ import DashboardLayout from '../../views/components/layout/DashboardLayout.vue'
 import Overview from '../../views/pages/Overview.vue'
 
 import User from "../../views/pages/user/User.vue"
-import Login from "../../views/pages/user/Login.vue"
-import Register from "../../views/pages/user/Register.vue"
+import Login from "../../views/pages/Login.vue"
+import Register from "../../views/pages/Register.vue"
 
 import UserProfile from "../../views/pages/user/UserProfile.vue"
 import UserInvite from "../../views/pages/user/Invite.vue"

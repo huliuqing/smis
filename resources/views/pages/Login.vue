@@ -59,7 +59,7 @@
 <script>
 
 import axios from 'axios'
-import api from "../../../assets/js/const/api";
+import api from "../../assets/js/const/api";
 
 export default {
   // props: ["email", "password"],

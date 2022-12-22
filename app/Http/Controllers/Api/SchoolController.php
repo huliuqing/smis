@@ -21,6 +21,12 @@ class SchoolController extends Controller
         //
     }
 
+    public function browserAll(Request $request)
+    {
+        $schools = School::all();
+        return $this->success($schools);
+    }
+
     public function browser(Request $request)
     {
         $schools = School::with(['withLoginUsers'])->paginate(30);
@@ -127,7 +133,7 @@ class SchoolController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\School  $school
+     * @param \App\Models\School $school
      * @return \Illuminate\Http\Response
      */
     public function show(School $school)

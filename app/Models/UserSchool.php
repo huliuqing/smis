@@ -13,6 +13,13 @@ class UserSchool extends Model
 
     protected $table = 'smis_user_schools';
 
+    const AUDIT_MAPPING = [
+            UserSchool::TYPE_DEFAULT => '未审核',
+            UserSchool::TYPE_SCHOOL_ADMIN => '学校管理员',
+            UserSchool::TYPE_SCHOOL_TEACHER => '教师',
+            UserSchool::TYPE_SCHOOL_STUDENT => '学生',
+        ];
+
     /**
      * The attributes that are mass assignable.
      *
@@ -26,5 +33,15 @@ class UserSchool extends Model
     {
         $cnt = $this->where(['user_id' => $userId, 'school_id' => $schoolId])->count();
         return $cnt > 0;
+    }
+
+    public function school()
+    {
+        return $this->belongsTo(School::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

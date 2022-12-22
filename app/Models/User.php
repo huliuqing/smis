@@ -42,9 +42,9 @@ class User extends Authenticatable
      * @TODO 教师注册审核
      * @return void
      */
-    public function audit()
+    public function audits()
     {
-
+        return $this->hasMany(UserSchool::class);
     }
 
     public function schools()

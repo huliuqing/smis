@@ -71,6 +71,8 @@ const api = {
     notification: '/api/v1/notification/send',
     chat: '/api/v1/chat/send',
 
+    fetchAllSchool: '/api/v1/school/browserAll',
+
     getApi: function (field) {
         if (field in this) {
             return this[field]

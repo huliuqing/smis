@@ -29,7 +29,8 @@
 
             <div class="form-outline mb-4">
               <select class="form-control" id="typeSchoolId" v-model:schoolId="schoolId">
-                <option value="11">北京大学</option>
+                <option v-for="school in schools" value="school.id">{{ school.name }}</option>
+<!--                <option value="11">北京大学</option>-->
               </select>
               <label class="form-label" for="typeSchoolId">学校</label>
             </div>
@@ -51,7 +52,8 @@
 
 
 <script>
-import api from "../../../assets/js/const/api";
+import api from "../../assets/js/const/api";
+import notify from "../../assets/js/utils/notify";
 
 let min = 1;
 let max = 100;
@@ -77,6 +79,12 @@ export default {
       type: Number
     },
   },
+  data() {
+    return {
+      schools: this.fetchAllSchool(),
+    }
+  },
+
   methods: {
     register: function (e) {
       console.log(this.name, this.email, this.password)
@@ -89,20 +97,32 @@ export default {
       }
 
       let url = api.getRequestUrl('register')
-      console.log('request url', url, registerData);
       axios.post(url, registerData)
           .then((response) => {
             console.log(response);
             if (response.status === 200) {
-              // console.log('resp token:', response.data.token)
-              // sessionStorage.setItem('token', response.data.token)
               this.$router.push(api.getHomePageUrl())
             } else {
-              alert(error);
             }
           })
-          .catch(function (error) {
-            console.log(error);
+          .catch((error) => {
+            notify.danger(this.$notifications, '登录请求失败')
+          });
+    },
+
+    fetchAllSchool: function (kw) {
+      let url = api.getRequestUrl('fetchAllSchool')
+      console.log('register school list', url)
+      axios.get(url)
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              this.schools = response.data
+            } else {
+            }
+          })
+          .catch((error) => {
+            notify.danger(this.$notifications, '学校列表请求失败')
           });
     }
   }

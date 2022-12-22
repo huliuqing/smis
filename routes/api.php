@@ -46,6 +46,7 @@ Route::prefix('v1')->group(function () {
         });
     });
 
+    Route::get('/school/browserAll', 'Api\\SchoolController@browserAll');
     Route::middleware('auth:api')->group(function () {
         Route::get('/school/browser', 'Api\\SchoolController@browser');
         Route::post('/school/join', 'Api\\SchoolController@join');

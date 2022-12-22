@@ -150,7 +150,7 @@ export default {
               if (this.hasFollowing()) {
                 this.followings.cnt = respData.total
                 this.followings.data = respData.data
-                notify.danger(this.$notifications, '关注列表获取成功')
+                notify.success(this.$notifications, '关注列表获取成功')
               }
             } else {
               // alert(' user profile request err.');
