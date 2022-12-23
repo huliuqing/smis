@@ -4,7 +4,7 @@
 
       <ul class="nav ">
         <li class="nav-item">
-          <router-link class="nav-link" to="/school/add">
+          <router-link class="nav-link" to="/smis/school/add">
             <button type="button" class="btn btn-info btn-fill">
               <i class="nc-icon nc-simple-add"></i>
             </button>

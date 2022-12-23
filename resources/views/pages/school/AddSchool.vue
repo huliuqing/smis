@@ -14,7 +14,7 @@
 
       <div class="row text-center">
         <div class="col-md-1">
-          <router-link class="btn btn-fill"  to="/school/browser">返回</router-link>
+          <router-link class="btn btn-fill"  to="/smis/school/browser">返回</router-link>
         </div>
         <div class="col-md-1">
           <button type="submit" class="btn btn-info btn-fill" @click.prevent="createSchool">添加</button>

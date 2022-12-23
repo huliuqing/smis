@@ -84,7 +84,7 @@ class AuditController extends AdminController
         $form->display('user.email', __('Email'));
         $form->display('school.name', __('School'));
 
-        $form->select('type', '审核')->options(UserSchool::AUDIT_MAPPING);
+        $form->select('type', '审核')->options([UserSchool::TYPE_SCHOOL_ADMIN => '学校管理员',]);
 
         return $form;
     }

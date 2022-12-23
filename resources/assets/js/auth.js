@@ -18,7 +18,7 @@ var auth = (to, from, next) => {
         if(to.name === 'Login' || to.name === 'Register') {
             // next()
         } else {
-            next('/user/login')
+            next('/smis/user/login')
         }
     }
 

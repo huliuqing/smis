@@ -1,6 +1,17 @@
 <template>
   <div class="content">
     <div class="container-fluid">
+
+      <ul class="nav ">
+        <li class="nav-item">
+          <router-link class="nav-link" to="/smis/user/add">
+            <button type="button" class="btn btn-info btn-fill">
+              <i class="nc-icon nc-simple-add"></i>
+            </button>
+          </router-link>
+        </li>
+      </ul>
+
       <div class="row">
         <div class="col-12">
           <card class="strpied-tabled-with-hover">

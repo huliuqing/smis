@@ -29,8 +29,7 @@
 
             <div class="form-outline mb-4">
               <select class="form-control" id="typeSchoolId" v-model:schoolId="schoolId">
-                <option v-for="school in schools" value="school.id">{{ school.name }}</option>
-<!--                <option value="11">北京大学</option>-->
+                <option v-for="school in schools" v-bind:value="school.id">{{ school.name }}</option>
               </select>
               <label class="form-label" for="typeSchoolId">学校</label>
             </div>
@@ -62,15 +61,18 @@ let rand = Math.floor(Math.random() * (max - min + 1) + min);
 export default {
   props: {
     name: {
-      default: 'amin' + rand,
+      // default: 'amin' + rand,
+      default: '',
       type: String
     },
     email: {
-      default: 'admin' + rand + '@smis.com',
+      // default: 'admin' + rand + '@smis.com',
+      default: '',
       type: String
     },
     password: {
-      default: '12345678',
+      // default: '12345678',
+      default: '',
       type: String
     },
 
@@ -78,7 +80,16 @@ export default {
       default: 0,
       type: Number
     },
+
+    mode: {
+      default: '',
+      type: String
+    },
   },
+  mounted() {
+    this.parseQueryString(this.$route)
+  },
+
   data() {
     return {
       schools: this.fetchAllSchool(),
@@ -93,7 +104,7 @@ export default {
         name: this.name,
         email: this.email,
         password: this.password,
-        school_id: this.password,
+        school_id: this.schoolId,
       }
 
       let url = api.getRequestUrl('register')
@@ -106,13 +117,12 @@ export default {
             }
           })
           .catch((error) => {
-            notify.danger(this.$notifications, '登录请求失败')
+            notify.danger(this.$notifications, '注册请求失败')
           });
     },
 
     fetchAllSchool: function (kw) {
       let url = api.getRequestUrl('fetchAllSchool')
-      console.log('register school list', url)
       axios.get(url)
           .then((response) => {
             console.log(response);
@@ -124,6 +134,12 @@ export default {
           .catch((error) => {
             notify.danger(this.$notifications, '学校列表请求失败')
           });
+    },
+
+    parseQueryString: (vr) => {
+      this.email = vr.query.email
+      this.schoolId = parseInt(vr.query.school_id)
+      this.mode = vr.query.mode
     }
   }
 }

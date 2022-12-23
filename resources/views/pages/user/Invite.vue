@@ -18,8 +18,8 @@
           <div class="form-group">
             <label class="control-label" for="typeSchoolId">学校</label>
 
-            <select class="form-control" id="typeSchoolId" placeholder="选择学校" v-model:schoolId="schoolId">
-              <option value="11">北京大学</option>
+            <select class="form-control" id="typeSchoolId" v-model:schoolId="schoolId">
+              <option v-for="school in schools" v-bind:value="school.id">{{ school.name }}</option>
             </select>
           </div>
         </div>
@@ -55,6 +55,11 @@ export default {
       type: Number
     },
   },
+  data() {
+    return {
+      schools: this.fetchAllSchool(),
+    }
+  },
 
   methods: {
     inviteUser: function (e) {
@@ -80,7 +85,23 @@ export default {
           })
           .catch((error) => {
             console.log('Invite request error', error)
-            toastNotify.danger(this.$notifications, `<span>邀请 <b>` +  this.email + `</b> 失败</span>`)
+            toastNotify.danger(this.$notifications, `<span>邀请 <b>` + this.email + `</b> 失败</span>`)
+          });
+    },
+
+    fetchAllSchool: function (kw) {
+      let url = api.getRequestUrl('fetchAllSchool')
+      console.log('register school list', url)
+      axios.get(url)
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              this.schools = response.data
+            } else {
+            }
+          })
+          .catch((error) => {
+            notify.danger(this.$notifications, '学校列表请求失败')
           });
     }
   }

@@ -14,26 +14,26 @@
         <span class="navbar-toggler-bar burger-lines"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end">
-        <ul class="nav navbar-nav mr-auto">
+<!--        <ul class="nav navbar-nav mr-auto">-->
 <!--          <li class="nav-item">-->
 <!--            <a class="nav-link" href="#" data-toggle="dropdown">-->
 <!--              <i class="nc-icon nc-palette"></i>-->
 <!--            </a>-->
 <!--          </li>-->
 
-          <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nc-icon nc-zoom-split"></i>
-              <span class="d-lg-block">&nbsp;Search</span>
-            </a>
-          </li>
-        </ul>
+<!--          <li class="nav-item">-->
+<!--            <a href="#" class="nav-link">-->
+<!--              <i class="nc-icon nc-zoom-split"></i>-->
+<!--              <span class="d-lg-block">&nbsp;Search</span>-->
+<!--            </a>-->
+<!--          </li>-->
+<!--        </ul>-->
 
         <ul class="navbar-nav ml-auto">
 
           <base-dropdown tag="li" id="inbox" v-tooltip.top-center="inboxTooltip" @click="$emit('browserNotification')">
             <template slot="title">
-              <i class="nc-icon nc-send"></i>
+              <i class="nc-icon nc-bell-55"></i>
               <b class="caret" v-if="notificationCnt > 0"></b>
               <span class="notification" id="inbox-cnt" v-if="notificationCnt > 0">{{ notificationCnt }}</span>
             </template>
@@ -42,11 +42,11 @@
           </base-dropdown>
 
           <li class="nav-item">
-            <router-link class="nav-link" to="/admin/user/invite"><i class="nc-icon nc-simple-add"></i> 邀请 </router-link>
+            <router-link class="nav-link" to="/smis/user/invite"><i class="nc-icon nc-simple-add"></i> 邀请 </router-link>
           </li>
 
           <li class="nav-item">
-            <sidebar-link to="/admin/user">
+            <sidebar-link to="/smis/user/profile">
               <i class="nc-icon nc-single-02"></i>
             </sidebar-link>
           </li>
@@ -107,6 +107,11 @@ export default {
       console.log(`TopNavbar[watchNotification] channel[${channel}], event[${listenEvent}]`)
       Echo.channel(channel)
           .listen(listenEvent, (e) => {
+            let auth = JSON.parse(sessionStorage.getItem('user'))
+            if (e.message.msg_to === auth.id) {
+              return
+            }
+
             this.notificationCnt++
             let dropdown = document.getElementById('inbox').querySelector('.dropdown-menu')
             let elem = `<a class="dropdown-item" href="#">${e.message.message}</a>`

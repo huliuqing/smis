@@ -14,6 +14,7 @@ class UserInvite extends Mailable
     protected $inviter;// 邀请人
     protected $inviteeEmail;// 被邀请人邮件
     protected $school;// 邀请加入的学校
+
     /**
      * Create a new message instance.
      *
@@ -40,7 +41,7 @@ class UserInvite extends Mailable
             ->view('invite', [
                 'inviter' => $this->inviter,
                 'school' => $this->school,
-                'url'   => $url
+                'url' => $url
             ]);
     }
 
@@ -51,7 +52,11 @@ class UserInvite extends Mailable
 
     public function buildInviteUrl()
     {
-        $parts = ['school_id' => $this->school->id, 'email' => $this->inviteeEmail];
-        return 'https://localhost/register?' . http_build_query($parts);
+        $parts = [
+            'school_id' => $this->school->id,
+            'email' => $this->inviteeEmail,
+            'mode' => 'invite',
+        ];
+        return env('APP_URL') . '/#/smis/invite/register?' . http_build_query($parts);
     }
 }

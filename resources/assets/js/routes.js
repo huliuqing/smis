@@ -18,6 +18,7 @@ import Friends from "../../views/pages/Friends.vue";
 import AddSchool from "../../views/pages/school/AddSchool.vue";
 import BrowerSchool from "../../views/pages/school/BrowerSchool.vue";
 import UserBrowser from "../../views/pages/user/UserBrowser.vue";
+import AddUser from "../../views/pages/user/AddUser.vue";
 
 // import TableList from 'src/pages/TableList.vue'
 // import Typography from 'src/pages/Typography.vue'
@@ -31,24 +32,21 @@ const routes = [
         path: '/',
         name: 'Home',
         component: DashboardLayout,
-        redirect: '/admin/overview'
+        redirect: '/smis/overview'
     },
 
-    // {
-    //     path: 'login',
-    //     name: 'Login',
-    //     component: Login,
-    // },
-    // {
-    //     path: 'register',
-    //     name: 'Register',
-    //     component: Register,
-    // },
     {
-        path: '/user',
+        path: '/smis/invite/register',
+        name: 'InviteRegister',
+        component: User,
+        redirect: '/smis/user/register'
+    },
+
+    {
+        path: '/smis/user',
         name: 'User',
         component: User,
-        redirect: '/user/login',
+        redirect: '/smis/user/login',
         children: [
             {
                 path: 'login',
@@ -64,9 +62,9 @@ const routes = [
     },
 
     {
-        path: '/admin',
+        path: '/smis',
         component: DashboardLayout,
-        redirect: '/admin/overview',
+        redirect: '/smis/overview',
         children: [
             {
                 path: 'overview',
@@ -75,7 +73,7 @@ const routes = [
             },
 
             {
-              path: 'user',
+              path: 'user/profile',
               name: 'UserProfile',
               component: UserProfile
             },
@@ -85,6 +83,13 @@ const routes = [
               name: 'UserBrowser',
               component: UserBrowser
             },
+
+            {
+              path: 'user/add',
+              name: 'AddUser',
+              component: AddUser
+            },
+
 
             {
               path: 'user/invite',
@@ -103,44 +108,13 @@ const routes = [
               name: 'UserFriends',
               component: Friends
             },
-
-            // {
-            //   path: 'table-list',
-            //   name: 'Table List',
-            //   component: TableList
-            // },
-            // {
-            //   path: 'typography',
-            //   name: 'Typography',
-            //   component: Typography
-            // },
-            // {
-            //   path: 'icons',
-            //   name: 'Icons',
-            //   component: Icons
-            // },
-            // {
-            //   path: 'maps',
-            //   name: 'Maps',
-            //   component: Maps
-            // },
-            // {
-            //   path: 'notifications',
-            //   name: 'Notifications',
-            //   component: Notifications
-            // },
-            // {
-            //   path: 'upgrade',
-            //   name: 'Upgrade to PRO',
-            //   component: Upgrade
-            // }
         ]
     },
 
     {
-        path: '/school',
+        path: '/smis/school',
         component: DashboardLayout,
-        redirect: '/school/browser',
+        redirect: '/smis/school/browser',
         children: [
             {
               path: 'browser',

@@ -28,7 +28,6 @@ Vue.use(SmisBootstrap)
 console.log(routes)
 
 const router = new VueRouter({
-    mode: 'history',
     linkActiveClass: 'nav-item active',
     routes
 })
