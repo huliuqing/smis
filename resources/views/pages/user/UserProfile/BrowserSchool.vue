@@ -34,7 +34,7 @@ import Card from "../../../components/Cards/Card.vue";
 import api from "../../../../assets/js/const/api";
 import notify from "../../../../assets/js/utils/notify";
 
-const tableColumns = ['ID', 'Name']
+const tableColumns = ['ID', 'Name', 'School_Role']
 
 export default {
   components: {
@@ -52,21 +52,17 @@ export default {
   methods: {
     fetchSchools: function (e) {
       let url = api.getRequestUrl('browserSchool')
-      console.log('request url', url);
       axios.get(url)
           .then((response) => {
-            console.log(response);
             if (response.status === 200) {
               let respData = response.data
 
-              console.log('hasSchool b:', this.hasSchool)
               this.hasSchool = respData.total > 0
-              console.log('hasSchool a:', this.hasSchool)
               if (this.hasSchool) {
-                this.schools = respData.data
+                this.schools = this.fmtSchools(respData.data)
+                console.log(this.schools)
               }
             } else {
-              // alert(' user profile request err.');
             }
           })
           .catch((error) => {
@@ -74,6 +70,26 @@ export default {
           });
 
       return []
+    },
+    fmtSchools: function (schools) {
+      for (let idx in schools) {
+        schools[idx]['school_role'] = this.schoolRoleName(schools[idx].pivot.type)
+        schools[idx]['school_role_type'] = schools[idx].pivot.type
+      }
+      return schools
+    },
+    schoolRoleName: function (type) {
+      // 0:default,1:学校管理员,2:普通教师,3:普通学生
+      switch (type) {
+        case 1:
+          return '学校管理员';
+        case 2:
+          return '教师';
+        case 3:
+          return '学生';
+        default:
+          return '待审核';
+      }
     }
   }
 }

@@ -88,10 +88,13 @@ class NoticeController extends AdminController
                 try {
                     $httpClient = new CurlHTTPClient(env("LINE_BOT_CHANNEL_ACCESS_TOKEN"));
                     $bot = new LINEBot($httpClient, ['channelSecret' => env("LINE_BOT_CHANNEL_SECRET")]);
+
                     $textMessageBuilder = new TextMessageBuilder($form->message);
-                    $response = $bot->broadcast($textMessageBuilder);//群发消息
+                    $response = $bot->broadcast($textMessageBuilder);
                     Log::info("Line 广播:", [$response->getHTTPStatus(), $response->getRawBody()]);
                 } catch (\Exception $e) {
+
+                    Log::error("Line 广播:", ['exception' => $e->getMessage()]);
 
                 }
             } else {

@@ -26,12 +26,29 @@ class LineController extends Controller
 //        $this->middleware('guest')->except('logout');
     }
 
-    public function redirect() {
+    /**
+     * @example http://127.0.0.1:8000/login/line/redirect
+     * @return mixed
+     */
+    public function redirect()
+    {
         // @TODO 获取 redirect path
-        return Socialite::driver('line')->redirect();
+        $drive = Socialite::driver('line');
+        return $this->success(['redirect_url' => $drive->redirect()->getTargetUrl()]);
     }
 
-    public function callback(Request $request) {
+    /**
+     * @example http://127.0.0.1:8000/login/line/callback?code=6YQgLhaFYvvikm2CGKCA&state=lY6gYx3lLNcZ8Vzf6M3F6G3vY7zoIaOz3BrJ4wck
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function callback(Request $request)
+    {
+        return response()->redirectTo('http://127.0.0.1:8000/#/smis/user/line/callback?code=' . $request->code);
+    }
+
+    public function bindOrLogin(Request $request)
+    {
         $user = Auth::user();
         $oauthUser = Socialite::driver('line')->stateless()->user();
 
@@ -40,24 +57,24 @@ class LineController extends Controller
             'method' => __METHOD__,
             'message' => 'line account oauth callback.',
             'data' => [
-                'login_user' =>$user,
-                'line_user' =>$oauthUser,
+                'login_user' => $user,
+                'line_user' => $oauthUser,
             ],
         ];
 
-        Log::debug(json_encode($log));
+        Log::debug('line callback', $log);
         if ($this->validUser($user)) {
-            Log::debug(json_encode($log + ['message' => 'logic: login user bind line account']));
+            Log::debug('[START ] bind: bind line.');
             return $this->userBindLine($user, $oauthUser);
         }
 
-        Log::debug(json_encode($log + ['message' => 'line account oauth callback.']));
+        Log::debug('[START] login: line login.');
         return $this->loginWithLine($oauthUser);
     }
 
     private function validUser($user)
     {
-        return !empty($user);
+        return $user;
     }
 
     /**
@@ -87,8 +104,8 @@ class LineController extends Controller
         $loginUser->sns_line_id = $lineId;
         $loginUser->save();
 
-        $token = $loginUser->createToken(env('AUTH_TOKEN_NAME_API'))->accessToken;
-        return $this->success(['token' => $token]);
+//        $token = $loginUser->createToken(env('AUTH_TOKEN_NAME_API'))->accessToken;
+        return $this->success(['message' => 'bind line success']);
     }
 
     /**
@@ -105,7 +122,7 @@ class LineController extends Controller
         }
 
         $token = $lineUser->createToken(env('AUTH_TOKEN_NAME_API'))->accessToken;
-        return response()->json(['token' => $token], 200);
+        return response()->json(['token' => $token, 'message' => 'login with line success']);
     }
 
 }

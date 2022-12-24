@@ -22,6 +22,7 @@ Route::get('/notification/index', 'Api\\MessageNotificationController@index');
 Route::get('/chat/index', 'Api\\MessageChatController@index');
 
 Route::prefix('login')->group(function() {
-    Route::get('/line/redirect', 'Api\\AuthController@redirect')->name('line.redirect');
-    Route::get('/line/callback', 'Api\\AuthController@index')->name('line.callback');
+    Route::get('/line/redirect', 'Api\\Auth\\LineController@redirect')->name('line.redirect');
+    Route::get('/line/callback', 'Api\\Auth\\LineController@callback')->name('line.callback');
+//    Route::get('/line/doBind', 'Api\\Auth\\LineController@doBind')->name('line.doBind');
 });

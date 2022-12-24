@@ -37,8 +37,10 @@
               <p class="text-center fw-bold mx-3 mb-0 text-muted">或</p>
             </div>
 
-            <a class="btn btn-primary btn-lg btn-block" style="background-color: #3b5998" href="#!"
-               role="button">
+            <a class="btn btn-fill btn-lg btn-block"
+               style="background-color: #00be00"
+               href="#!"
+               role="button" @click.prevent="redirect">
               <i class="fa-brands fa-line"></i> Line 登录
             </a>
 
@@ -60,6 +62,7 @@
 
 import axios from 'axios'
 import api from "../../assets/js/const/api";
+import auth from "../../assets/js/auth";
 
 export default {
   // props: ["email", "password"],
@@ -74,6 +77,11 @@ export default {
     },
   },
   methods: {
+    redirect: function () {
+      auth.line.setBindIden(auth.line.bindIdenLogin)
+      auth.line.redirect()
+    },
+
     login: function (e) {
       console.log(this.email, this.password)
 

@@ -19,6 +19,7 @@ import AddSchool from "../../views/pages/school/AddSchool.vue";
 import BrowerSchool from "../../views/pages/school/BrowerSchool.vue";
 import UserBrowser from "../../views/pages/user/UserBrowser.vue";
 import AddUser from "../../views/pages/user/AddUser.vue";
+import LineCallback from "../../views/pages/Auth/LineCallback.vue";
 
 // import TableList from 'src/pages/TableList.vue'
 // import Typography from 'src/pages/Typography.vue'
@@ -32,7 +33,7 @@ const routes = [
         path: '/',
         name: 'Home',
         component: DashboardLayout,
-        redirect: '/smis/overview'
+        redirect: '/smis/user/profile'
     },
 
     {
@@ -57,6 +58,18 @@ const routes = [
                 path: 'register',
                 name: 'Register',
                 component: Register,
+            },
+
+            {
+                path: 'line/login',
+                name: 'LineLogin',
+                component: User,
+            },
+
+            {
+                path: 'line/callback',
+                name: 'LineCallback',
+                component: LineCallback,
             }
         ]
     },

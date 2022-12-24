@@ -133,15 +133,13 @@ export default {
       window.sessionStorage.clear()
 
       let url = api.getRequestUrl('logout')
-      console.log('request url', url);
       axios.post(url)
           .then((response) => {
             console.log(response);
             if (response.status === 200) {
               console.log('resp:', response)
-              this.$router.push('/')
+              this.$router.push('/smis/user/login')
             } else {
-              alert('log out request err.');
             }
           })
           .catch(function (error) {

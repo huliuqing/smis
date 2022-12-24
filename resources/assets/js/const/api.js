@@ -73,6 +73,11 @@ const api = {
 
     fetchAllSchool: '/api/v1/school/browserAll',
 
+    lineRedirect: '/login/line/redirect',
+
+    lineBind: '/api/v1/line/bind',
+    lineLogin: '/api/v1/line/login',
+
     getApi: function (field) {
         if (field in this) {
             return this[field]

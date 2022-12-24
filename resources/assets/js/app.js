@@ -8,7 +8,7 @@ import App from "../../views/App.vue";
 import SmisBootstrap from './smisMain'
 import VueRouter from "vue-router"
 
-import AuthGuard from './auth'
+import Auth from './auth'
 import routes from "./routes"
 
 require('./bootstrap');
@@ -32,7 +32,7 @@ const router = new VueRouter({
     routes
 })
 
-router.beforeEach(AuthGuard)
+router.beforeEach(Auth.guard)
 
 const app = new Vue({
     el: '#app',
