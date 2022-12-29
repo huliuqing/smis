@@ -6,7 +6,6 @@ use App\Mail\UserInvite;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 use App\Http\Controllers\Controller;
@@ -24,7 +23,32 @@ class UserController extends Controller
      */
     public function browser(Request $request)
     {
-        $users = User::where('id', '<>', Auth::user()->id)->paginate($request->per_page ?? 30);
+        $authUser = Auth::user();
+
+        $whereStmt = [
+            ['id', '<>', Auth::user()->id],
+        ];
+
+        $whereNotIn = ['type' => [User::TYPE_UNKNOWN]];
+        if ($authUser->type === User::TYPE_STUDENT) {
+            $whereNotIn = ['type' => [User::TYPE_STUDENT, User::TYPE_UNKNOWN]];
+        }
+
+        $q = User::where($whereStmt);
+        foreach ($whereNotIn as $k => $v) {
+            $q = $q->whereNotIn($k, $v);
+        }
+
+        $schoolIds = $authUser->schools->pluck('id');
+        $users = $q->whereHas('schools', function ($query) use ($schoolIds) {
+            $query->whereIn('smis_schools.id', $schoolIds);
+        })->with('schools:name')->paginate($request->per_page ?? 30);
+
+        foreach ($users as &$user) {
+            $user['school_name'] = $user->schools->pluck('name')->implode(',');
+            $user['status_label'] = User::friendlyStatus($user['status']);
+            $user['type_label'] = User::friendlyType($user['type']);
+        }
         return $this->success($users);
     }
 
@@ -60,7 +84,6 @@ class UserController extends Controller
             'type' => UserSchool::TYPE_DEFAULT, // 0 default,when audit pass change school admin
         ];
 
-        // @TODO define SchoolUser
         $refSchoolUser = UserSchool::create($newRef);
         if (!$refSchoolUser) {
             return $this->failure(['message' => "bind user's school failure."], 400);
@@ -91,7 +114,13 @@ class UserController extends Controller
      */
     public function create(Request $request)
     {
-        $user = User::create([
+        $authUser = Auth::user();
+
+        if ($authUser->type === User::TYPE_STUDENT) {
+            return $this->failure(['message' => 'not allow'], 403);
+        }
+
+        $newUser = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
@@ -100,7 +129,7 @@ class UserController extends Controller
             'sns_line_id' => '',
         ]);
 
-        if (!$user) {
+        if (!$newUser) {
             return $this->failure(['message' => 'create new user failure.'], 400);
         }
 
@@ -108,7 +137,7 @@ class UserController extends Controller
         // @TODO 支持绑定多学校
         $newRef = [
             'school_id' => $request->school_id,
-            'user_id' => $user->id,
+            'user_id' => $newUser->id,
             'type' => UserSchool::TYPE_SCHOOL_STUDENT, // 3 for student
         ];
 

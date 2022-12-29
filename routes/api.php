@@ -22,7 +22,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/student/login', 'Api\\Student\\AuthController@login');
         Route::post('/login', 'Api\\Teacher\\AuthController@login');
 
-        Route::middleware('auth:api')->group(function (){
+        Route::middleware('auth:api')->group(function () {
             Route::post('/logout', 'Api\\Teacher\\AuthController@logout');
             Route::get('/profile', 'Api\\Teacher\\AuthController@profile');
         });
@@ -30,10 +30,10 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix("user")->group(function () {
         Route::post("/register", 'Api\\UserController@register');
-        Route::post('/create', 'Api\\UserController@create');
 
 
-        Route::middleware('auth:api')->group(function (){
+        Route::middleware('auth:api')->group(function () {
+            Route::post('/create', 'Api\\UserController@create');
             Route::get("/browser", 'Api\\UserController@browser');
             Route::post("/invite", 'Api\\UserController@invite');
 
@@ -46,8 +46,9 @@ Route::prefix('v1')->group(function () {
         });
     });
 
-    Route::get('/school/browserAll', 'Api\\SchoolController@browserAll');
     Route::middleware('auth:api')->group(function () {
+        Route::get('/school/browserAll', 'Api\\SchoolController@browserAll');
+        Route::get('/menu/browser', 'Api\\MenuController@browser');
         Route::get('/school/browser', 'Api\\SchoolController@browser');
         Route::post('/school/join', 'Api\\SchoolController@join');
         Route::post('/school/store', 'Api\\SchoolController@store');

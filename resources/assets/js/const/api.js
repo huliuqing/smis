@@ -78,6 +78,8 @@ const api = {
     lineBind: '/api/v1/line/bind',
     lineLogin: '/api/v1/line/login',
 
+    menu: '/api/v1/menu/browser',
+
     getApi: function (field) {
         if (field in this) {
             return this[field]

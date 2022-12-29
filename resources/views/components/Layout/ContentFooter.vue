@@ -9,7 +9,7 @@
         </ul>
       </nav>
 
-      <div class="fixed-plugin">
+      <div class="fixed-plugin" v-if="user.type != 2">
         <div class="dropdown show-dropdown" v-bind:class="show ? 'show' : ''">
           <a data-toggle="dropdown" @click.prevent="toggle">
             <i class="fa fa-paper-plane fa-2x"></i>
@@ -55,6 +55,7 @@ export default {
       sendNotice: '发送通知',
       show: false,
       messageContent: '',
+      user: JSON.parse(sessionStorage.getItem('user')),
     }
   },
   methods: {

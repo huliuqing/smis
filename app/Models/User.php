@@ -118,4 +118,29 @@ class User extends Authenticatable
     {
         return self::TYPE_TEACHER === $givenType;
     }
+
+    public static function friendlyStatus($status) {
+        if ($status == self::STATUS_CLOSE) {
+            return '关闭';
+        }
+
+        if ($status == self::STATUS_NORMAL) {
+            return '正常';
+        }
+
+        return '未知';
+    }
+
+    public static function friendlyType($type) {
+
+        if ($type == self::TYPE_TEACHER) {
+            return '老师';
+        }
+
+        if ($type == self::TYPE_STUDENT) {
+            return '学生';
+        }
+
+        return '未知';
+    }
 }

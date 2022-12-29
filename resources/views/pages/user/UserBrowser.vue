@@ -57,7 +57,7 @@ import UserTable from "./UserProfile/UserTable.vue";
 import api from "../../../assets/js/const/api";
 import notify from "../../../assets/js/utils/notify";
 
-const tableColumns = ['Id', 'Name', 'Created_At', 'Status', 'Type']
+const tableColumns = ['Id', 'Name', 'Status_Label', 'Type_Label', 'School_Name', 'Created_At']
 export default {
   components: {
     UserTable,

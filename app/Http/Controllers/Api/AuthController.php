@@ -19,7 +19,7 @@ class AuthController extends Controller
     public function profile(Request $request)
     {
         $user = auth()->user();
-
+        $user->setAttribute('can_bind', $user->sns_line_id === '');
         return $this->success(['user' => $user]);
     }
 

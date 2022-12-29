@@ -3,25 +3,11 @@
     <side-bar>
       <mobile-menu slot="content"></mobile-menu>
 
-<!--      <sidebar-link to="/smis/overview">-->
-<!--        <i class="nc-icon nc-chart-pie-35"></i>-->
-<!--        <p>Dashboard</p>-->
-<!--      </sidebar-link>-->
-
-      <sidebar-link to="/smis/user/browser">
-        <i class="nc-icon nc-badge"></i>
-        <p>用户列表</p>
+      <sidebar-link v-for="(menu, idx) in menus" :key="idx" :to="menu.uri">
+        <i class="nc-icon" v-bind:class="menu.icon"></i>
+        <p>{{ menu.name }}</p>
       </sidebar-link>
 
-      <sidebar-link to="/smis/school/browser">
-        <i class="nc-icon nc-istanbul"></i>
-        <p>学校列表</p>
-      </sidebar-link>
-
-      <sidebar-link to="/smis/user/friends">
-        <i class="nc-icon nc-atom"></i>
-        <p>朋友圈</p>
-      </sidebar-link>
     </side-bar>
 
     <div class="main-panel">
@@ -37,24 +23,47 @@
 </style>
 
 <script>
-  import TopNavbar from './TopNavbar.vue'
-  import ContentFooter from './ContentFooter.vue'
-  import DashboardContent from './Content.vue'
-  import MobileMenu from './MobileMenu.vue'
+import TopNavbar from './TopNavbar.vue'
+import ContentFooter from './ContentFooter.vue'
+import DashboardContent from './Content.vue'
+import MobileMenu from './MobileMenu.vue'
+import api from "../../../assets/js/const/api";
+import notify from "../../../assets/js/utils/notify";
 
-  export default {
-    components: {
-      TopNavbar,
-      ContentFooter,
-      DashboardContent,
-      MobileMenu
-    },
-    methods: {
-      toggleSidebar() {
-        if (this.$sidebar.showSidebar) {
-          this.$sidebar.displaySidebar(false)
-        }
+export default {
+  components: {
+    TopNavbar,
+    ContentFooter,
+    DashboardContent,
+    MobileMenu
+  },
+  data() {
+    return {
+      menus: this.fetchMenus(1),
+    }
+  },
+  methods: {
+    toggleSidebar() {
+      if (this.$sidebar.showSidebar) {
+        this.$sidebar.displaySidebar(false)
       }
+    },
+
+    fetchMenus: function ($userRoleType) {
+      let url = api.getRequestUrl('menu')
+      axios.get(url,)
+          .then((response) => {
+            console.log(response);
+            if (response.status === 200) {
+              this.menus = response.data
+              console.log('menus ', this.menus)
+            } else {
+            }
+          })
+          .catch((error) => {
+            notify.danger(this.$notifications, '菜单列表获取失败')
+          });
     }
   }
+}
 </script>

@@ -14,21 +14,6 @@
         <span class="navbar-toggler-bar burger-lines"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end">
-<!--        <ul class="nav navbar-nav mr-auto">-->
-<!--          <li class="nav-item">-->
-<!--            <a class="nav-link" href="#" data-toggle="dropdown">-->
-<!--              <i class="nc-icon nc-palette"></i>-->
-<!--            </a>-->
-<!--          </li>-->
-
-<!--          <li class="nav-item">-->
-<!--            <a href="#" class="nav-link">-->
-<!--              <i class="nc-icon nc-zoom-split"></i>-->
-<!--              <span class="d-lg-block">&nbsp;Search</span>-->
-<!--            </a>-->
-<!--          </li>-->
-<!--        </ul>-->
-
         <ul class="navbar-nav ml-auto">
 
           <base-dropdown tag="li" id="inbox" v-tooltip.top-center="inboxTooltip" @click="$emit('browserNotification')">
@@ -38,10 +23,10 @@
               <span class="notification" id="inbox-cnt" v-if="notificationCnt > 0">{{ notificationCnt }}</span>
             </template>
 
-<!--            <a class="dropdown-item" href="#">Notification 1</a>-->
           </base-dropdown>
 
-          <li class="nav-item">
+
+          <li class="nav-item" v-if="user.type != 2">
             <router-link class="nav-link" to="/smis/user/invite"><i class="nc-icon nc-simple-add"></i> 邀请 </router-link>
           </li>
 
@@ -78,6 +63,7 @@ export default {
       activeNotifications: false,
       notificationCnt: 0,
       inboxTooltip: '站内信',
+      user: JSON.parse(sessionStorage.getItem('user')),
     }
   },
   mounted() {

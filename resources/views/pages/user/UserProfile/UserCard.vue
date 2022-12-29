@@ -7,15 +7,20 @@
       <a href="#">
         <img class="avatar border-gray" src="img/faces/face-3.jpg" alt="..."/>
 
-        <h4 class="title">{{ user.name }}<br/>
+        <h4 class="title">{{user.id}}:{{ user.name }}<br/>
           <small>{{ user.email }}</small>
         </h4>
       </a>
     </div>
 
     <p class="description text-center">
-      <button href="#" v-tooltip.top-center="bindLineTooltip" class="btn btn-simple" @click.prevent="redirect">
-        <i class="fa fa-facebook-square"></i>
+
+      <button v-if='canBind' v-tooltip.top-center="bindLineTooltip" class="btn btn-simple" @click.prevent="redirect">
+        <i class="fa fa-brands fa-line" style="color:#00b900"></i>
+      </button>
+
+      <button v-else class="btn btn-simple">
+        <i class="fa fa-brands fa-line"></i>
       </button>
     </p>
 
@@ -41,7 +46,8 @@ export default {
   data() {
     return {
       user: this.getUserProfile(),
-      bindLineTooltip: 'Line 绑定'
+      bindLineTooltip: 'Line 绑定',
+      canBind: false,
     }
   },
   methods: {
@@ -56,6 +62,7 @@ export default {
             if (response.status === 200) {
               sessionStorage.setItem('user', JSON.stringify(response.data.user))
               this.user = response.data.user
+              this.canBind = this.user.can_bind
             } else {
             }
           })

@@ -23,7 +23,8 @@ class SchoolController extends Controller
 
     public function browserAll(Request $request)
     {
-        $schools = School::all();
+        $authUser = Auth::user();
+        $schools = School::whereIn('id', $authUser->schools->pluck('id'))->get();
         return $this->success($schools);
     }
 
