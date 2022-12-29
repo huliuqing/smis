@@ -19,7 +19,6 @@ use Illuminate\Http\Request;
 
 Route::prefix('v1')->group(function () {
     Route::prefix("/auth")->group(function () {
-        Route::post('/student/login', 'Api\\Student\\AuthController@login');
         Route::post('/login', 'Api\\Teacher\\AuthController@login');
 
         Route::middleware('auth:api')->group(function () {
@@ -30,7 +29,6 @@ Route::prefix('v1')->group(function () {
 
     Route::prefix("user")->group(function () {
         Route::post("/register", 'Api\\UserController@register');
-
 
         Route::middleware('auth:api')->group(function () {
             Route::post('/create', 'Api\\UserController@create');
