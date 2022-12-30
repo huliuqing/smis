@@ -18,7 +18,8 @@ class SchoolController extends Controller
      */
     public function index()
     {
-        //
+        $schools = School::get();
+        return $this->success($schools);
     }
 
     public function browserAll(Request $request)

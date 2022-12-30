@@ -72,6 +72,7 @@ const api = {
     chat: '/api/v1/chat/send',
 
     fetchAllSchool: '/api/v1/school/browserAll',
+    listSchool: '/api/v1/school/list',
 
     lineRedirect: '/login/line/redirect',
 

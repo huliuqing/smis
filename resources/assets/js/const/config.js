@@ -2,10 +2,11 @@
 const production = 'production';
 const develop = 'dev';
 
-// const env = develop;
-const env = production;
+const env = develop;
+// const env = production;
 
 let isProduction = function () {
+    console.log('ENV check', env, production)
     return env === production
 }
 
@@ -34,6 +35,6 @@ const dev = {
 }
 
 
-const config = isProduction ? prod : dev;
+const config = isProduction() ? prod : dev;
 
 export default config

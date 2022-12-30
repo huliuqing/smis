@@ -18,6 +18,8 @@ use Illuminate\Http\Request;
 //});
 
 Route::prefix('v1')->group(function () {
+    Route::get('/school/list', 'Api\\SchoolController@index');
+
     Route::prefix("/auth")->group(function () {
         Route::post('/login', 'Api\\Teacher\\AuthController@login');
 

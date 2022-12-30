@@ -122,7 +122,7 @@ export default {
     },
 
     fetchAllSchool: function (kw) {
-      let url = api.getRequestUrl('fetchAllSchool')
+      let url = api.getRequestUrl('listSchool')
       axios.get(url)
           .then((response) => {
             console.log(response);
