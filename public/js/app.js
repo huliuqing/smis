@@ -1763,7 +1763,8 @@ module.exports = baseAssignValue;
 var production = 'production';
 var develop = 'dev';
 
-var env = develop;
+// const env = develop;
+var env = production;
 
 var isProduction = function isProduction() {
     return env === production;
@@ -1782,7 +1783,7 @@ var pusherConfig = {
 };
 
 var prod = {
-    host: 'http://127.0.0.1:8000',
+    host: 'http://smis.metaprogramer.com',
     pusher: pusherConfig,
     isProduction: isProduction
 };

@@ -2,7 +2,8 @@
 const production = 'production';
 const develop = 'dev';
 
-const env = develop;
+// const env = develop;
+const env = production;
 
 let isProduction = function () {
     return env === production
@@ -21,7 +22,7 @@ let pusherConfig = {
 }
 
 const prod = {
-    host: 'http://127.0.0.1:8000',
+    host: 'http://smis.metaprogramer.com',
     pusher: pusherConfig,
     isProduction
 }
