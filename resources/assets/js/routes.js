@@ -1,5 +1,5 @@
-import DashboardLayout from '../../views/components/layout/DashboardLayout.vue'
-// GeneralViews
+import DashboardLayout from '../../views/components/Layout/DashboardLayout.vue'
+// GeneralView
 // import NotFound from '../pages/NotFoundPage.vue'
 
 // Admin pages
