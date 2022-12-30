@@ -9,8 +9,6 @@ window._ = require('lodash');
 
 try {
     window.$ = window.jQuery = require('jquery');
-
-    require('bootstrap-sass');
 } catch (e) {}
 
 /**
@@ -21,7 +19,9 @@ try {
 
 window.axios = require('axios');
 
+let oauthToken = sessionStorage.getItem('token')
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
+window.axios.defaults.headers.common['Authorization'] = oauthToken ? 'Bearer ' + oauthToken : '';
 
 /**
  * Next we will register the CSRF Token as a common header with Axios so that
@@ -43,13 +43,12 @@ if (token) {
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo'
+import Echo from 'laravel-echo'
 
-// window.Pusher = require('pusher-js');
-
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: 'your-pusher-key',
-//     cluster: 'mt1',
-//     encrypted: true
-// });
+window.Pusher = require('pusher-js');
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: '180cf793c3dd274ecc22',
+    cluster: 'ap3',
+    encrypted: true
+})
