@@ -103,7 +103,6 @@ export default {
               window.axios.defaults.headers.common['Authorization'] = oauthToken ? 'Bearer ' + oauthToken : '';
 
               this.loadUser()
-              this.$router.push({path: '/'})
             } else {
               alert(error);
             }
@@ -122,6 +121,8 @@ export default {
               console.log('resp:', response)
               sessionStorage.setItem('user', JSON.stringify(response.data.user))
               this.user = response.data.user
+
+              this.$router.push({path: '/'})
             } else {
               alert(' user profile request err.');
             }
