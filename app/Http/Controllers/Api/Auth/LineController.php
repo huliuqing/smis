@@ -44,7 +44,7 @@ class LineController extends Controller
      */
     public function callback(Request $request)
     {
-        return response()->redirectTo('http://127.0.0.1:8000/#/smis/user/line/callback?code=' . $request->code);
+        return response()->redirectTo(env('APP_URL') . '/#/smis/user/line/callback?code=' . $request->code);
     }
 
     public function bindOrLogin(Request $request)

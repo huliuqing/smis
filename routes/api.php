@@ -56,8 +56,8 @@ Route::prefix('v1')->group(function () {
         Route::post('/notification/send', 'Api\\MessageNotificationController@send');
         Route::post('/chat/send', 'Api\\MessageChatController@send');
 
-        Route::get('/line/bind', 'Api\\Auth\\LineController@bindOrLogin')->name('line.bindOrLogin');
+        Route::get('/line/bind', 'Api\\Auth\\LineController@bindOrLogin');
     });
 
-    Route::get('/line/login', 'Api\\Auth\\LineController@bindOrLogin')->name('line.bindOrLogin');
+    Route::get('/line/login', 'Api\\Auth\\LineController@bindOrLogin');
 });
